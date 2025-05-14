@@ -2,9 +2,13 @@
 
 namespace Database\Seeders;
 
+use App\Models\SchoolSession;
+use App\Models\Student;
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Utils\Utils;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Carbon;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,11 +17,48 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // Create 5 random users
+        User::factory(5)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        // Admin user
+        User::create([
+            'name' => 'Admin',
+            'email' => 'admin@srms-app.com',
+            'password' => Hash::make('password'),
+            'role' => Utils::ROLE_ADMIN,
+        ]);
+
+        // Lecturer user
+        User::create([
+            'name' => 'Lecturer',
+            'email' => 'lecturer@srms-app.com',
+            'password' => Hash::make('password'),
+            'role' => Utils::ROLE_LECTURER,
+        ]);
+
+        // Student user
+        $studentUser = User::create([
+            'name' => 'Student',
+            'email' => 'student@srms-app.com',
+            'password' => Hash::make('password'),
+            'role' => Utils::ROLE_STUDENT,
+        ]);
+
+        // Create a school session
+        $session = SchoolSession::create([
+            'name' => '2020/2021',
+            'first_semester_start_date' => Carbon::create(2020, 11, 1),
+            'second_semester_start_date' => Carbon::create(2021, 3, 1),
+        ]);
+
+        // Create a student linked to the user and session
+        Student::create([
+            'user_id' => $studentUser->id,
+            'school_session_id' => $session->id,
+            'matric_no' => '303330033',
+            'current_level' => '100',
+            'program_type' => Utils::PROGRAM_TYPE_DEGREE,
+            'department' => 'Computer Science',
         ]);
     }
 }

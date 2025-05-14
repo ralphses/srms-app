@@ -1,0 +1,42 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+
+    protected $fillable = [
+        'user_id',
+        'matric_no',
+        'current_level',
+        'program_type',
+        'department',
+        'session_admitted'
+    ];
+    public function up(): void
+    {
+        Schema::create('students', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('school_session_id')->constrained('school_sessions');
+            $table->string('matric_no');
+            $table->string('current_level');
+            $table->string('program_type');
+            $table->string('department');
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('students');
+    }
+};
