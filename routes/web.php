@@ -30,6 +30,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])
         ->name('logout');
 
-    Route::get("dashboard/{role}", [DashboardController::class, 'index'])
-        ->name('dashboard');
+    Route::prefix("dashboard/{role}")->group( function () {
+        Route::get('', [DashboardController::class, 'index'])
+            ->name('dashboard');
+
+        Route::get("profile", [DashboardController::class, 'profile'])
+            ->name('profile');
+    });
 });

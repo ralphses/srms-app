@@ -22,9 +22,12 @@ class Student extends Model
     public function user() {
         return $this->belongsTo(User::class, 'user_id');
     }
-    public function session()
-    {
-        return $this->belongsTo(SchoolSession::class, 'school_session_id');
 
+    public function session() {
+        return $this->belongsTo(SchoolSession::class, 'school_session_id');
+    }
+
+    public function courseRegistrations() {
+        return $this->hasMany(CourseRegistration::class);
     }
 }

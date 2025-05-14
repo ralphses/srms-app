@@ -140,8 +140,8 @@
     Core libraries and functionality
     webpack is putting everything together at assets/_js/main/app.js
 -->
-<script src="assets/js/codebase.app.min.js"></script>
+<script src="{{ asset('assets/js/codebase.app.min.js') }}"></script>
 <!-- Page JS Code -->
-<script src="assets/js/pages/db_corporate.min.js"></script>
+<script src="{{ asset('assets/js/pages/db_corporate.min.js') }}"></script>
 </body>
 </html>

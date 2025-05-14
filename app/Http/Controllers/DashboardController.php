@@ -8,20 +8,30 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-    public function index(Request $request) {
-        $role = $request->role;
-        $requestRole = $request->user()->role;
+    public function index(Request $request)
+    {
+        $user = $request->user();
 
-        if ($role !== $requestRole) {
-            return redirect(route('login'));
+        if ($request->role !== $user->role) {
+            return redirect()->route('login');
         }
 
-        return match ($role) {
-            Utils::ROLE_ADMIN    => view('dashboard.admin'),
+        return match ($user->role) {
+            Utils::ROLE_ADMIN => view('dashboard.admin'),
             Utils::ROLE_LECTURER => view('dashboard.lecturer'),
-            Utils::ROLE_STUDENT  => view('dashboard.student'),
+            Utils::ROLE_STUDENT => view('dashboard.student'),
+            default => view('login')
         };
+    }
 
+    public function profile(Request $request) {
 
+        $user = $request->user();
+
+        if ($request->role !== $user->role) {
+            return redirect()->route('login');
+        }
+
+        return $user->profile();
     }
 }
