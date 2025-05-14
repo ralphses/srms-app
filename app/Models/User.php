@@ -50,13 +50,15 @@ class User extends Authenticatable
 
     public function profile()
     {
-        if ($this->role == Utils::ROLE_STUDENT) {
-            return Student::query()->where('user_id', $this->id)
-                ->first();
-        }
-        else if ($this->role == Utils::ROLE_ADMIN) {
-            return Student::query()->where('user_id', $this->id)
-                ->first();
-        }
+        $roleModelMap = [
+            Utils::ROLE_STUDENT => Student::class,
+            Utils::ROLE_ADMIN => AdminUser::class,
+            Utils::ROLE_LECTURER => Lecturer::class,
+        ];
+
+        $model = $roleModelMap[$this->role] ?? null;
+
+        return $model ? $model::query()->where('user_id', $this->id)->first() : null;
     }
+
 }

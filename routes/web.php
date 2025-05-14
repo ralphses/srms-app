@@ -19,10 +19,6 @@ Route::middleware('auth')->group(function () {
         return view('result');
     })->name('result');
 
-    Route::get('/course-registration', function () {
-        return view('course-registration');
-    })->name('course.register');
-
     Route::get('/', function () {
         return view('welcome');
     })->name('home');
@@ -36,5 +32,12 @@ Route::middleware('auth')->group(function () {
 
         Route::get("profile", [DashboardController::class, 'profile'])
             ->name('profile');
+
+        Route::put("profile", [DashboardController::class, 'updateProfile'])
+            ->name('profile.update');
+
+        Route::get('/course-registration', function () {
+            return view('course-registration');
+        })->name('course.register');
     });
 });

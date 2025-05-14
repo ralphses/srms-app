@@ -11,4 +11,14 @@ class Utils
 
     const PROGRAM_TYPE_DEGREE = "degree";
     const PROGRAM_TYPE_DIPLOMA = "diploma";
+
+    const SEMESTER_FIRST = "first";
+    const SEMESTER_SECOND = "second";
+    const SEMESTER_THIRD = "third";
+
+    const SEMESTERS = [
+        self::SEMESTER_FIRST => "First",
+        self::SEMESTER_SECOND => "Second",
+        self::SEMESTER_THIRD => "Third",
+    ];
 }

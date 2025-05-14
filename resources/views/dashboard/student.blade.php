@@ -62,7 +62,7 @@
 
                     <!-- Profile -->
                     <div class="col-md-6 col-xl-4">
-                        <a class="block block-rounded block-bordered" href="#">
+                        <a class="block block-rounded block-bordered" href="{{ route('profile', ['role' => auth()->user()->role]) }}">
                             <div class="block-content p-2">
                                 <div class="py-4 text-center bg-body-light rounded">
                                     <div class="fs-2 fw-bold mb-0">Profile</div>
@@ -87,11 +87,11 @@
                                     <!-- Academic Session -->
                                     <div class="mb-3">
                                         <label for="reg_session" class="form-label">Academic Session</label>
-                                        <select name="session" id="reg_session" class="form-select" required>
+                                        <select name="semester" id="reg_semester" class="form-select" required>
                                             <option value="" disabled selected>Select session</option>
-                                            <option value="2023/2024">2023/2024</option>
-                                            <option value="2022/2023">2022/2023</option>
-                                            <option value="2021/2022">2021/2022</option>
+                                            @foreach($sessions as $session)
+                                                <option value="{{ $session->id }}">{{ $session->name }}</option>
+                                            @endforeach
                                         </select>
                                     </div>
 
@@ -100,8 +100,9 @@
                                         <label for="reg_semester" class="form-label">Semester</label>
                                         <select name="semester" id="reg_semester" class="form-select" required>
                                             <option value="" disabled selected>Select semester</option>
-                                            <option value="First Semester">First Semester</option>
-                                            <option value="Second Semester">Second Semester</option>
+                                            @foreach($semesters as $key => $semester)
+                                                <option value="{{ $key }}">{{ $semester }}</option>
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
@@ -127,11 +128,11 @@
                                     <!-- Academic Session -->
                                     <div class="mb-3">
                                         <label for="reg_session" class="form-label">Academic Session</label>
-                                        <select name="session" id="reg_session" class="form-select" required>
+                                        <select name="semester" id="reg_semester" class="form-select" required>
                                             <option value="" disabled selected>Select session</option>
-                                            <option value="2023/2024">2023/2024</option>
-                                            <option value="2022/2023">2022/2023</option>
-                                            <option value="2021/2022">2021/2022</option>
+                                            @foreach($sessions as $session)
+                                                <option value="{{ $session->id }}">{{ $session->name }}</option>
+                                            @endforeach
                                         </select>
                                     </div>
 
@@ -140,8 +141,9 @@
                                         <label for="reg_semester" class="form-label">Semester</label>
                                         <select name="semester" id="reg_semester" class="form-select" required>
                                             <option value="" disabled selected>Select semester</option>
-                                            <option value="First Semester">First Semester</option>
-                                            <option value="Second Semester">Second Semester</option>
+                                            @foreach($semesters as $key => $semester)
+                                                <option value="{{ $key }}">{{ $semester }}</option>
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
