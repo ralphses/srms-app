@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Course;
 use App\Models\SchoolSession;
 use App\Models\Student;
 use App\Models\User;
@@ -47,8 +48,9 @@ class DatabaseSeeder extends Seeder
         // Create a school session
         $session = SchoolSession::create([
             'name' => '2020/2021',
-            'first_semester_start_date' => Carbon::create(2020, 11, 1),
-            'second_semester_start_date' => Carbon::create(2021, 3, 1),
+            'current_semester' => Utils::SEMESTER_FIRST,
+            'first_semester_start_date' => Carbon::create(2020, 11),
+            'second_semester_start_date' => Carbon::create(2021, 3),
         ]);
 
         // Create a student linked to the user and session
@@ -57,6 +59,27 @@ class DatabaseSeeder extends Seeder
             'school_session_id' => $session->id,
             'matric_no' => '303330033',
             'current_level' => '100',
+            'next_level' => '200',
+            'program_type' => Utils::PROGRAM_TYPE_DEGREE,
+            'department' => 'Computer Science',
+        ]);
+
+        Course::create([
+            'name' => 'Introduction to Computer Science',
+            'code' => 'CSC111',
+            'unit' => 3,
+            'level' => 200,
+            'semester' => Utils::SEMESTER_FIRST,
+            'program_type' => Utils::PROGRAM_TYPE_DEGREE,
+            'department' => 'Computer Science',
+        ]);
+
+        Course::create([
+            'name' => 'Introduction to Problem SOlving',
+            'code' => 'CSC121',
+            'unit' => 3,
+            'level' => 200,
+            'semester' => Utils::SEMESTER_FIRST,
             'program_type' => Utils::PROGRAM_TYPE_DEGREE,
             'department' => 'Computer Science',
         ]);

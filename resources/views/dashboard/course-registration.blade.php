@@ -1,5 +1,6 @@
 <x-app-layout>
     <main id="main-container">
+        <!-- Header -->
         <div class="bg-primary-dark">
             <div class="content content-top">
                 <div class="row push">
@@ -8,33 +9,51 @@
                             <span class="fw-normal fs-lg text-white-75 d-none d-md-inline-block">Welcome Yusuf Agabi</span>
                         </h1>
                     </div>
-                    <div class="col-md py-2 d-md-flex align-items-md-center justify-content-md-end text-center">
-                        {{--                        <button type="button" class="btn btn-alt-primary">--}}
-                        {{--                            <i class="fa fa-plus opacity-50 me-1"></i> New Account--}}
-                        {{--                        </button>--}}
-                    </div>
                 </div>
             </div>
         </div>
+
+        <!-- Page Content -->
         <div class="content">
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul class="mb-0">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
             <div class="block block-rounded block-bordered">
                 <div class="block-header">
-                    <h3 class="block-title text-uppercase">Course Registration - 2023/2024 (First Semester)</h3>
+                    <h3 class="block-title text-uppercase">Course Registration - {{ $session->name }} ({{ucfirst($semester)}} Semester)</h3>
                 </div>
                 <div class="block-content">
-                    <form action="#" method="POST" id="registrationForm">
+                    <form action="{{ route('student.course.register.submit', ['role' => auth()->user()->role]) }}" method="POST" id="registrationForm">
                         @csrf
+
+                        <!-- Session and Semester (Readonly) -->
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label">Session</label>
+                                <input type="text" class="form-control" value="{{ $session->name }}" readonly name="session">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Semester</label>
+                                <input type="text" class="form-control" hidden value="{{$semester}}" readonly name="semester">
+                                <input type="text" class="form-control" value="{{ucfirst($semester)}} semester" readonly>
+                            </div>
+                        </div>
 
                         <!-- Course Selection -->
                         <div class="mb-4">
                             <label for="courseSelect" class="form-label">Select Course</label>
                             <select class="form-select" id="courseSelect">
                                 <option value="" disabled selected>-- Select a course --</option>
-                                <option value="CSC101" data-name="Introduction to Programming" data-unit="3">CSC101 - Introduction to Programming (3 Units)</option>
-                                <option value="MTH101" data-name="Calculus I" data-unit="3">MTH101 - Calculus I (3 Units)</option>
-                                <option value="PHY101" data-name="Physics I" data-unit="3">PHY101 - Physics I (3 Units)</option>
-                                <option value="ENG101" data-name="English & Communication" data-unit="2">ENG101 - English & Communication (2 Units)</option>
-                                <option value="GST101" data-name="Use of Library" data-unit="1">GST101 - Use of Library (1 Unit)</option>
+                                @foreach($availableCourses as $course)
+                                    <option value="{{ $course->id }}" data-name="{{ $course->name }}" data-id="{{ $course->id }}" data-unit="{{ $course->unit }}">
+                                        {{$course->code}} - {{ $course->name }} ({{$course->unit}} Units)</option>
+                                @endforeach
                             </select>
                         </div>
 
@@ -61,12 +80,17 @@
                             </table>
                         </div>
 
-                        <!-- Hidden input for submitting selected courses -->
+                        <!-- Hidden input for selected courses -->
                         <input type="hidden" name="selected_courses" id="selectedCoursesInput">
 
-                        <!-- Submit Button -->
-                        <div class="mt-4 text-end">
-                            <button type="submit" class="btn btn-success">Submit Registration</button>
+                        <!-- Buttons -->
+                        <div class="mt-4 d-flex justify-content-between">
+                            <a href="{{ route('dashboard', ['role' => auth()->user()->role]) }}" class="btn btn-secondary">
+                                Cancel
+                            </a>
+                            <button type="submit" class="btn btn-success">
+                                Submit Registration
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -74,7 +98,7 @@
         </div>
     </main>
 
-    <!-- JS to handle dynamic behavior -->
+    <!-- JavaScript -->
     <script>
         let selectedCourses = [];
         const courseSelect = document.getElementById('courseSelect');
@@ -84,13 +108,14 @@
 
         courseSelect.addEventListener('change', function () {
             const selectedOption = this.options[this.selectedIndex];
-            const code = selectedOption.value;
+            const id = selectedOption.dataset.id;
             const name = selectedOption.dataset.name;
+            const code = selectedOption.value;
             const unit = parseInt(selectedOption.dataset.unit);
 
             if (!code || selectedCourses.find(c => c.code === code)) return;
 
-            selectedCourses.push({ name, code, unit });
+            selectedCourses.push({ id, name, code, unit });  // include 'id'
             renderTable();
         });
 

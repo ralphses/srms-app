@@ -14,6 +14,7 @@ class Student extends Model
         'user_id',
         'matric_no',
         'current_level',
+        'next_level',
         'program_type',
         'department',
         'school_session_id'

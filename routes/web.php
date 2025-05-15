@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CourseRegistrationController;
 use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,6 +28,7 @@ Route::middleware('auth')->group(function () {
         ->name('logout');
 
     Route::prefix("dashboard/{role}")->group( function () {
+
         Route::get('', [DashboardController::class, 'index'])
             ->name('dashboard');
 
@@ -36,8 +38,10 @@ Route::middleware('auth')->group(function () {
         Route::put("profile", [DashboardController::class, 'updateProfile'])
             ->name('profile.update');
 
-        Route::get('/course-registration', function () {
-            return view('course-registration');
-        })->name('course.register');
+        Route::get('course-registration', [CourseRegistrationController::class, 'create'])
+            ->name('course.register.create');
+
+        Route::post('course-registration', [CourseRegistrationController::class, 'submit'])
+            ->name('student.course.register.submit');
     });
 });

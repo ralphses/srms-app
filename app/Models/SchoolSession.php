@@ -14,5 +14,6 @@ class SchoolSession extends Model
         'name',
         'first_semester_start_date',
         'second_semester_start_date',
+        'current_semester',
     ];
 }

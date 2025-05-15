@@ -25,6 +25,21 @@
         <div class="bg-body-extra-light">
             <!-- Breadcrumb -->
             <div class="content">
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                    @if (session('success'))
+                        <div class="alert alert-success">
+                            <span>{{ session('success') }}</span>
+                        </div>
+                    @endif
                 <nav class="breadcrumb push rounded-pill px-4 py-2 mb-0">
                     <a class="breadcrumb-item" href="javascript:void(0)">Home</a>
                     <span class="breadcrumb-item active">Dashboard</span>
@@ -77,7 +92,7 @@
                 <div class="modal fade" id="courseRegistrationModal" tabindex="-1" aria-labelledby="courseRegistrationModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
-                            <form action="#" method="GET">
+                            <form action="{{ route('course.register.create', ['role' => auth()->user()->role]) }}" method="GET">
                                 @csrf
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="courseRegistrationModalLabel">Select Session & Semester</h5>
@@ -87,7 +102,7 @@
                                     <!-- Academic Session -->
                                     <div class="mb-3">
                                         <label for="reg_session" class="form-label">Academic Session</label>
-                                        <select name="semester" id="reg_semester" class="form-select" required>
+                                        <select name="school_session" id="reg_semester" class="form-select" required>
                                             <option value="" disabled selected>Select session</option>
                                             @foreach($sessions as $session)
                                                 <option value="{{ $session->id }}">{{ $session->name }}</option>

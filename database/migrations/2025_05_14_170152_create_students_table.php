@@ -10,14 +10,6 @@ return new class extends Migration
      * Run the migrations.
      */
 
-    protected $fillable = [
-        'user_id',
-        'matric_no',
-        'current_level',
-        'program_type',
-        'department',
-        'session_admitted'
-    ];
     public function up(): void
     {
         Schema::create('students', function (Blueprint $table) {
@@ -26,6 +18,7 @@ return new class extends Migration
             $table->foreignId('school_session_id')->constrained('school_sessions');
             $table->string('matric_no');
             $table->string('current_level');
+            $table->string('next_level');
             $table->string('program_type');
             $table->string('department');
             $table->timestamps();
