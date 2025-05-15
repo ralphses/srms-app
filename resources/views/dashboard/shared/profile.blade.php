@@ -59,7 +59,7 @@
                     <div class="row">
 
                         <div class="col-md-6">
-                            <p><strong>Department:</strong> {{ $profile->department ?? 'N/A' }}</p>
+                            <p><strong>Department:</strong> {{ $profile->department->name ?? 'N/A' }}</p>
                             <p><strong>Level:</strong> {{ $profile->current_level ?? 'N/A' }}</p>
                             <p><strong>Program Type:</strong> {{ $profile->program_type ?? 'N/A' }}</p>
                             <p><strong>Session:</strong> {{ $profile->session->name ?? 'N/A' }}</p>

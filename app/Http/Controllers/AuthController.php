@@ -27,6 +27,10 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
+            if (Auth::user()->first_sign_in) {
+                return redirect()->route('password.update', ['role' => Auth::user()->role])->with('error', 'Please update your password');
+            }
+
             // Redirect based on role
             $role = Auth::user()->role;
             return match ($role) {
@@ -80,6 +84,31 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
+        return redirect()->route('login');
+    }
+
+    public function showPasswordUpdateForm(Request $request)
+    {
+        if (Auth::check()) {
+            return view('dashboard.shared.update-password');
+        }
+        return redirect()->route('login');
+    }
+
+    public function updatePassword(Request $request)
+    {
+        if (Auth::check()) {
+            $validated = $request->validate([
+                'password' => ['required', 'confirmed', 'min:6'],
+            ]);
+
+            User::query()->find(Auth::id())->update([
+                'password' => Hash::make($validated['password']),
+                'first_sign_in' => false,
+            ]);
+
+            return redirect()->route('dashboard', ['role' => Auth::user()->role]);
+        }
         return redirect()->route('login');
     }
 }

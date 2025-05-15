@@ -12,11 +12,11 @@ class Student extends Model
 
     protected $fillable = [
         'user_id',
+        'department_id',
         'matric_no',
         'current_level',
         'next_level',
         'program_type',
-        'department',
         'school_session_id'
     ];
 
@@ -30,5 +30,9 @@ class Student extends Model
 
     public function courseRegistrations() {
         return $this->hasMany(CourseRegistration::class);
+    }
+
+    public function department() {
+        return $this->belongsTo(Department::class, 'department_id');
     }
 }

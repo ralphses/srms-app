@@ -18,12 +18,16 @@ class Course extends Model
         'level',
         'semester',
         'program_type',
-        'department',
+        'department_id',
     ];
 
     public function courseRegistrations()
     {
         return $this->belongsToMany(CourseRegistration::class, 'course_course_registration', 'course_id', 'course_registration_id');
+    }
+
+    public function department() {
+        return $this->belongsTo(Department::class, 'department_id');
     }
 
 }

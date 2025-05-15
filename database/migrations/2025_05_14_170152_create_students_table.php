@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('current_level');
             $table->string('next_level');
             $table->string('program_type');
-            $table->string('department');
+            $table->foreignId('department_id')->constrained('departments');
             $table->timestamps();
         });
     }

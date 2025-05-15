@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\Course;
+use App\Models\Department;
+use App\Models\Lecturer;
 use App\Models\SchoolSession;
 use App\Models\Student;
 use App\Models\User;
@@ -21,6 +23,9 @@ class DatabaseSeeder extends Seeder
         // Create 5 random users
         User::factory(5)->create();
 
+        $cscDept = Department::query()->create(['name' => 'Computer Science', 'code' => 'CSC']);
+        $phyDept = Department::query()->create(['name' => 'Physics', 'code' => 'PHY']);
+
         // Admin user
         User::create([
             'name' => 'Admin',
@@ -30,7 +35,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // Lecturer user
-        User::create([
+        $lecturerUser = User::create([
             'name' => 'Lecturer',
             'email' => 'lecturer@srms-app.com',
             'password' => Hash::make('password'),
@@ -61,7 +66,17 @@ class DatabaseSeeder extends Seeder
             'current_level' => '100',
             'next_level' => '200',
             'program_type' => Utils::PROGRAM_TYPE_DEGREE,
-            'department' => 'Computer Science',
+            'department_id' => $cscDept->id,
+        ]);
+
+        // Create a lecturer
+        Lecturer::create([
+            'user_id' => $lecturerUser->id,
+            'department_id' => $cscDept->id,
+            'level' => 200,
+            'program_type' => Utils::PROGRAM_TYPE_DEGREE,
+            'staff_id' => '0001',
+
         ]);
 
         Course::create([
@@ -71,7 +86,7 @@ class DatabaseSeeder extends Seeder
             'level' => 200,
             'semester' => Utils::SEMESTER_FIRST,
             'program_type' => Utils::PROGRAM_TYPE_DEGREE,
-            'department' => 'Computer Science',
+            'department_id' => $cscDept->id,
         ]);
 
         Course::create([
@@ -81,7 +96,7 @@ class DatabaseSeeder extends Seeder
             'level' => 200,
             'semester' => Utils::SEMESTER_FIRST,
             'program_type' => Utils::PROGRAM_TYPE_DEGREE,
-            'department' => 'Computer Science',
+            'department_id' => $cscDept->id,
         ]);
     }
 }

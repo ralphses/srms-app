@@ -18,12 +18,12 @@ class DashboardController extends Controller
         }
 
         return match ($user->role) {
-            Utils::ROLE_ADMIN => view('dashboard.admin'),
+            Utils::ROLE_ADMIN => view('dashboard.admin.index'),
             Utils::ROLE_LECTURER => view('dashboard.lecturer'),
             Utils::ROLE_STUDENT => (function () {
                 $semesters = Utils::SEMESTERS;
                 $sessions = SchoolSession::all('name', 'id');
-                return view('dashboard.student', compact('semesters', 'sessions'));
+                return view('dashboard.student.index', compact('semesters', 'sessions'));
             })(),
             default => redirect()->route('login'),
         };
@@ -38,7 +38,7 @@ class DashboardController extends Controller
             return redirect()->route('login');
         }
 
-        return view('dashboard.profile', [
+        return view('dashboard.shared.profile', [
             'profile' => $user->profile(),
         ]);
     }

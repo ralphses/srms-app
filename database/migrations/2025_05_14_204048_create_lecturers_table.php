@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users');
             $table->string('staff_id')->nullable();
-            $table->string('department');
+            $table->foreignId('department_id')->constrained('departments');
+            $table->string('level');
+            $table->string('program_type');
             $table->timestamps();
         });
     }

@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CourseRegistrationController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
 
 // Guest-only routes (login/register)
@@ -29,6 +30,9 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix("dashboard/{role}")->group( function () {
 
+        Route::get('password-update', [AuthController::class, 'showPasswordUpdateForm'])->name('password.update');
+        Route::post('password-update', [AuthController::class, 'updatePassword'])->name('password.update.submit');
+
         Route::get('', [DashboardController::class, 'index'])
             ->name('dashboard');
 
@@ -43,5 +47,14 @@ Route::middleware('auth')->group(function () {
 
         Route::post('course-registration', [CourseRegistrationController::class, 'submit'])
             ->name('student.course.register.submit');
+
+
+        // Admin student routes
+        Route::prefix("students")->group( function () {
+
+           Route::get('', [StudentController::class, 'index'])->name('students.index');
+           Route::get('/register', [StudentController::class, 'create'])->name('students.create');
+           Route::post('/register', [StudentController::class, 'store'])->name('students.store');
+        });
     });
 });

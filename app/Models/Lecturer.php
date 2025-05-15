@@ -13,7 +13,9 @@ class Lecturer extends Model
 
     protected $fillable = [
         'user_id',
-        'department',
+        'department_id',
+        'level',
+        'program_type',
         'staff_id'
     ];
 
@@ -24,5 +26,9 @@ class Lecturer extends Model
     public function courses()
     {
         return $this->belongsToMany(Course::class, 'lecturer_course', 'lecturer_id', 'course_id');
+    }
+
+    public function department() {
+        return $this->belongsTo(Department::class, 'department_id');
     }
 }

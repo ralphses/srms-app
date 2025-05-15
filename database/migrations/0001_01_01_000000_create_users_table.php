@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
+            $table->boolean('first_sign_in')->default(true);
             $table->enum('role', [App\Utils\Utils::ROLE_STUDENT, App\Utils\Utils::ROLE_ADMIN, App\Utils\Utils::ROLE_LECTURER]);
             $table->rememberToken();
             $table->timestamps();

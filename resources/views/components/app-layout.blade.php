@@ -72,16 +72,18 @@
                 <!-- END Logo -->
             </div>
 
-            <div class="space-x-1">
-                <!-- Open Search Section -->
-                <!-- Layout API, functionality initialized in Template._uiApiLayout() -->
-{{--                <button type="button" class="btn btn-sm btn-alt-secondary" data-toggle="layout"--}}
-{{--                        data-action="header_search_on">--}}
-{{--                    <i class="fa fa-fw fa-search opacity-50 me-1"></i>--}}
-{{--                    <span>Search</span>--}}
-{{--                </button>--}}
-                <!-- END Open Search Section -->
-            </div>
+           @if(auth()->check())
+                <div class="space-x-1 d-flex align-items-center">
+                    <!-- Logout Button -->
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="btn btn-sm btn-alt-danger">
+                            <i class="fa fa-sign-out-alt me-1"></i> Logout
+                        </button>
+                    </form>
+                </div>
+           @endif
+
             <!-- END Right Section -->
         </div>
         <!-- END Header Content -->
