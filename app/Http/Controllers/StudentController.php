@@ -12,9 +12,11 @@ use App\Utils\Utils;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rule;
 
 class StudentController extends Controller
@@ -25,6 +27,8 @@ class StudentController extends Controller
 
         // Authorization check
         if (!in_array($user->role, [Utils::ROLE_ADMIN, Utils::ROLE_LECTURER])) {
+            Auth::logout();
+            Session::flush();
             return redirect()->route('login')->with('error', 'Unauthorized access.');
         }
 
@@ -126,9 +130,9 @@ class StudentController extends Controller
         $profile = $user->profile();
 
         $query = Student::query()
-            ->where('level', $profile->level)
+            ->where('current_level', $profile->level)
             ->where('program_type', $profile->program_type)
-            ->where('department_id', $profile->department)
+            ->where('department_id', $profile->department->id)
             ->with(['user:id,name,email', 'session:id,name']);
 
         return $this->applyStudentFilters($query, $filters);

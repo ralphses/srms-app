@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use App\Models\Department;
-use App\Models\Lecturer;
 use App\Utils\Utils;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rule;
 
 class CourseController extends Controller
@@ -16,11 +17,24 @@ class CourseController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Course::with('department');
+
+        $role = $request->user()->role;
+
+        if (!in_array($role, [Utils::ROLE_LECTURER, Utils::ROLE_ADMIN])) {
+            Auth::logout();
+            Session::flush();
+            return redirect(route('login'))->with('error', "Unauthorized User");
+        }
+
+        $query = $role == Utils::ROLE_ADMIN ?
+            Course::with('department') :
+            Course::with('department')->whereHas('lecturers', function ($q) use ($request) {
+                $q->where('lecturer_id', $request->user()->profile()->id);
+            });
 
         if ($search = $request->input('search')) {
             $query->where(function ($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
+                $q->where('name', 'like', "%$search%")
                     ->orWhere('code', 'like', "%{$search}%");
             });
         }
@@ -51,7 +65,6 @@ class CourseController extends Controller
             'programTypes' => [Utils::PROGRAM_TYPE_DEGREE, Utils::PROGRAM_TYPE_DIPLOMA]
         ]);
     }
-
 
 
     /**

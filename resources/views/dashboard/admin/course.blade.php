@@ -1,3 +1,4 @@
+@php use App\Utils\Utils; @endphp
 <x-app-layout>
     <main id="main-container">
         <!-- Header -->
@@ -43,17 +44,22 @@
 
                 <!-- Breadcrumb -->
                 <nav class="breadcrumb push rounded-pill px-4 py-2 mb-3">
-                    <a class="breadcrumb-item" href="{{ route('dashboard', ['role' => auth()->user()->role]) }}">Home</a>
+                    <a class="breadcrumb-item"
+                       href="{{ route('dashboard', ['role' => auth()->user()->role]) }}">Home</a>
                     <span class="breadcrumb-item active">Courses</span>
                 </nav>
 
                 <!-- Filters + Search -->
-                <form id="filterForm" method="GET" action="{{ route('courses.index', ['role' => auth()->user()->role]) }}" class="row g-3 mb-4 justify-content-center">
+                <form id="filterForm" method="GET"
+                      action="{{ route('courses.index', ['role' => auth()->user()->role]) }}"
+                      class="row g-3 mb-4 justify-content-center">
                     <div class="col-md-3">
-                        <select name="department_id" class="form-select" onchange="document.getElementById('filterForm').submit()">
+                        <select name="department_id" class="form-select"
+                                onchange="document.getElementById('filterForm').submit()">
                             <option value="">All Departments</option>
                             @foreach ($departments as $department)
-                                <option value="{{ $department->id }}" {{ request('department_id') == $department->id ? 'selected' : '' }}>
+                                <option
+                                    value="{{ $department->id }}" {{ request('department_id') == $department->id ? 'selected' : '' }}>
                                     {{ $department->name }}
                                 </option>
                             @endforeach
@@ -61,7 +67,8 @@
                     </div>
 
                     <div class="col-md-2">
-                        <select name="program_type" class="form-select" onchange="document.getElementById('filterForm').submit()">
+                        <select name="program_type" class="form-select"
+                                onchange="document.getElementById('filterForm').submit()">
                             <option value="">All Programs</option>
                             @foreach ($programTypes as $type)
                                 <option value="{{ $type }}" {{ request('program_type') == $type ? 'selected' : '' }}>
@@ -72,7 +79,8 @@
                     </div>
 
                     <div class="col-md-2">
-                        <select name="level" class="form-select" onchange="document.getElementById('filterForm').submit()">
+                        <select name="level" class="form-select"
+                                onchange="document.getElementById('filterForm').submit()">
                             <option value="">All Levels</option>
                             @foreach ([100, 200, 300, 400, 500] as $level)
                                 <option value="{{ $level }}" {{ request('level') == $level ? 'selected' : '' }}>
@@ -83,7 +91,8 @@
                     </div>
 
                     <div class="col-md-4 d-flex">
-                        <input type="text" name="search" id="searchInput" class="form-control me-2" placeholder="Search by name or code" value="{{ request('search') }}">
+                        <input type="text" name="search" id="searchInput" class="form-control me-2"
+                               placeholder="Search by name or code" value="{{ request('search') }}">
                         <button type="submit" class="btn btn-primary">Search</button>
                     </div>
                 </form>
@@ -92,9 +101,12 @@
                 <div class="block block-rounded block-bordered">
                     <div class="block-header d-flex justify-content-between align-items-center">
                         <h3 class="block-title text-uppercase mb-0">Courses</h3>
-                        <a href="{{ route('courses.create', ['role' => auth()->user()->role]) }}" class="btn btn-success btn-sm">
-                            <i class="fa fa-plus me-1"></i> Create New Course
-                        </a>
+                        @if(auth()->user()->role === Utils::ROLE_ADMIN)
+                            <a href="{{ route('courses.create', ['role' => auth()->user()->role]) }}"
+                               class="btn btn-success btn-sm">
+                                <i class="fa fa-plus me-1"></i> Create New Course
+                            </a>
+                        @endif
                     </div>
 
                     <div class="block-content block-content-full table-responsive">
@@ -124,7 +136,8 @@
                                     <td>{{ ucfirst($course->program_type) }}</td>
                                     <td>{{ $course->department->name ?? 'N/A' }}</td>
                                     <td class="text-center">
-                                        <a href="{{ route('students.index', ['role' => auth()->user()->role, 'course' => $course->id]) }}" class="btn btn-sm btn-info">
+                                        <a href="{{ route('students.index', ['role' => auth()->user()->role, 'course' => $course->id]) }}"
+                                           class="btn btn-sm btn-info">
                                             View Students
                                         </a>
                                     </td>

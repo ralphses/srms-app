@@ -8,6 +8,7 @@ use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\LecturerController;
 use App\Http\Controllers\SchoolSessionController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\StudentResultController;
 use Illuminate\Support\Facades\Route;
 
 // Guest-only routes (login/register)
@@ -85,6 +86,11 @@ Route::middleware('auth')->group(function () {
             Route::get('', [SchoolSessionController::class, 'index'])->name('sessions.index');
             Route::get('create', [SchoolSessionController::class, 'create'])->name('sessions.create');
             Route::post('create', [SchoolSessionController::class, 'store'])->name('sessions.store');
+        });
+
+        Route::prefix("results")->group(function () {
+            Route::get('', [StudentResultController::class, 'index'])->name('results.index');
+            Route::post('save', [StudentResultController::class, 'store'])->name('results.store');
         });
     });
 });
