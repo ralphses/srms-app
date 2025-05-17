@@ -25,6 +25,7 @@ class AuthController extends Controller
         ]);
 
         if (Auth::attempt($credentials)) {
+
             $request->session()->regenerate();
 
             if (Auth::user()->first_sign_in) {

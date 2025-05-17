@@ -77,7 +77,7 @@
 
                     <!-- Profile -->
                     <div class="col-md-6 col-xl-3">
-                        <a class="block block-rounded block-bordered" href="{{ route('students.index', ['role' => auth()->user()->role]) }}">
+                        <a class="block block-rounded block-bordered" href="{{ route('courses.create', ['role' => auth()->user()->role]) }}">
                             <div class="block-content p-2">
                                 <div class="py-4 text-center bg-body-light rounded">
                                     <div class="fs-2 fw-bold mb-0">Add Course</div>
@@ -89,7 +89,7 @@
 
                     <!-- Profile -->
                     <div class="col-md-6 col-xl-3">
-                        <a class="block block-rounded block-bordered" href="{{ route('profile', ['role' => auth()->user()->role]) }}">
+                        <a class="block block-rounded block-bordered" href="{{ route('courses.index', ['role' => auth()->user()->role]) }}">
                             <div class="block-content p-2">
                                 <div class="py-4 text-center bg-body-light rounded">
                                     <div class="fs-2 fw-bold mb-0">Courses</div>
@@ -100,8 +100,19 @@
                     </div>
 
                     <!-- Profile -->
-                    <div class="col-md-6 col-xl-4">
-                        <a class="block block-rounded block-bordered" href="{{ route('profile', ['role' => auth()->user()->role]) }}">
+                    <div class="col-md-6 col-xl-3">
+                        <a class="block block-rounded block-bordered" href="{{ route('departments.index', ['role' => auth()->user()->role]) }}">
+                            <div class="block-content p-2">
+                                <div class="py-4 text-center bg-body-light rounded">
+                                    <div class="fs-2 fw-bold mb-0">Departments</div>
+                                    <div class="fs-sm fw-semibold text-sentencecase text-muted">Manage Departments</div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <!-- Profile -->
+                    <div class="col-md-6 col-xl-3">
+                        <a class="block block-rounded block-bordered" href="{{ route('lecturers.index', ['role' => auth()->user()->role]) }}">
                             <div class="block-content p-2">
                                 <div class="py-4 text-center bg-body-light rounded">
                                     <div class="fs-2 fw-bold mb-0">Lecturers</div>
@@ -112,8 +123,8 @@
                     </div>
 
                     <!-- Profile -->
-                    <div class="col-md-6 col-xl-4">
-                        <a class="block block-rounded block-bordered" href="{{ route('profile', ['role' => auth()->user()->role]) }}">
+                    <div class="col-md-6 col-xl-3">
+                        <a class="block block-rounded block-bordered" href="{{ route('sessions.index', ['role' => auth()->user()->role]) }}">
                             <div class="block-content p-2">
                                 <div class="py-4 text-center bg-body-light rounded">
                                     <div class="fs-2 fw-bold mb-0">Sessions</div>
@@ -124,7 +135,7 @@
                     </div>
 
                     <!-- Profile -->
-                    <div class="col-md-6 col-xl-4">
+                    <div class="col-md-6 col-xl-3">
                         <a class="block block-rounded block-bordered" href="{{ route('profile', ['role' => auth()->user()->role]) }}">
                             <div class="block-content p-2">
                                 <div class="py-4 text-center bg-body-light rounded">

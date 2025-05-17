@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use _PHPStan_781aefaf6\React\Http\Io\Transaction;
-use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\CourseRegistration;
 use App\Models\SchoolSession;
@@ -40,7 +38,7 @@ class CourseRegistrationController extends Controller
             'program_type'  => $profile->program_type,
         ])->get();
 
-        return view('dashboard.course-registration', [
+        return view('dashboard.student.course-registration', [
             'session'          => SchoolSession::find($validated['school_session']),
             'semester'         => $validated['semester'],
             'department'       => $profile->department,

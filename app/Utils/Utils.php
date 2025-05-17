@@ -2,6 +2,8 @@
 
 namespace App\Utils;
 
+use Illuminate\Support\Str;
+
 class Utils
 {
 
@@ -21,4 +23,27 @@ class Utils
         self::SEMESTER_SECOND => "Second",
         self::SEMESTER_THIRD => "Third",
     ];
+
+    const LEVELS = [
+        100,
+        200,
+        300,
+        400,
+        500,
+        600,
+        700,
+        800,
+        900,
+    ];
+
+    public static function generateStaffId(string $role) : string
+    {
+        $prefix = $role === self::ROLE_LECTURER ? "LEC" : "ADM";
+        return strtoupper($prefix . substr(str_replace("-", "", Str::uuid()->toString()), 0, 8));
+    }
+
+    public static function defaultPassword()
+    {
+        return "123456";
+    }
 }

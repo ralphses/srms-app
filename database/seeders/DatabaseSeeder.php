@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\AdminUser;
 use App\Models\Course;
 use App\Models\Department;
 use App\Models\Lecturer;
@@ -27,7 +28,7 @@ class DatabaseSeeder extends Seeder
         $phyDept = Department::query()->create(['name' => 'Physics', 'code' => 'PHY']);
 
         // Admin user
-        User::create([
+        $adminUser = User::create([
             'name' => 'Admin',
             'email' => 'admin@srms-app.com',
             'password' => Hash::make('password'),
@@ -77,6 +78,11 @@ class DatabaseSeeder extends Seeder
             'program_type' => Utils::PROGRAM_TYPE_DEGREE,
             'staff_id' => '0001',
 
+        ]);
+
+        AdminUser::create([
+            'user_id' => $adminUser->id,
+            'staff_id' => Utils::generateStaffId($adminUser->role),
         ]);
 
         Course::create([

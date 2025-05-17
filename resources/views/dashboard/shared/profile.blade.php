@@ -1,3 +1,4 @@
+@php use App\Utils\Utils; @endphp
 <x-app-layout>
 
     <!-- Main Container -->
@@ -12,7 +13,8 @@
                         </h1>
                     </div>
                     <div class="col-md py-2 d-md-flex align-items-md-center justify-content-md-end text-center">
-                        <a href="{{ route('dashboard', ['role' => auth()->user()->role]) }}" class="btn btn-alt-primary">
+                        <a href="{{ route('dashboard', ['role' => auth()->user()->role]) }}"
+                           class="btn btn-alt-primary">
                             <i class="fa fa-arrow-left opacity-50 me-1"></i> Back to Dashboard
                         </a>
                     </div>
@@ -36,38 +38,90 @@
         <!-- Page Content -->
         <div class="content">
             <!-- Profile Info Block -->
-            <div class="block block-rounded block-bordered">
-                <div class="block-header">
-                    <h3 class="block-title text-uppercase">Personal Information</h3>
-                </div>
-                <div class="block-content">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <p><strong>Matric Number:</strong> {{ $profile->matric_no ?? 'N/A' }}</p>
-                            <p><strong>Name:</strong> {{ auth()->user()->name }}</p>
-                            <p><strong>Email:</strong> {{ auth()->user()->email }}</p>
-                            <p><strong>Role:</strong> {{ ucfirst(auth()->user()->role) }}</p>
+            @if(auth()->user()->role == Utils::ROLE_STUDENT)
+                <div class="block block-rounded block-bordered">
+                    <div class="block-header">
+                        <h3 class="block-title text-uppercase">Personal Information</h3>
+                    </div>
+                    <div class="block-content">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>Matric Number:</strong> {{ $profile->matric_no ?? 'N/A' }}</p>
+                                <p><strong>Name:</strong> {{ auth()->user()->name }}</p>
+                                <p><strong>Email:</strong> {{ auth()->user()->email }}</p>
+                                <p><strong>Role:</strong> {{ ucfirst(auth()->user()->role) }}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="block block-rounded block-bordered">
-                <div class="block-header">
-                    <h3 class="block-title text-uppercase">Academic Information</h3>
-                </div>
-                <div class="block-content">
-                    <div class="row">
+                <div class="block block-rounded block-bordered">
+                    <div class="block-header">
+                        <h3 class="block-title text-uppercase">Academic Information</h3>
+                    </div>
+                    <div class="block-content">
+                        <div class="row">
 
-                        <div class="col-md-6">
-                            <p><strong>Department:</strong> {{ $profile->department->name ?? 'N/A' }}</p>
-                            <p><strong>Level:</strong> {{ $profile->current_level ?? 'N/A' }}</p>
-                            <p><strong>Program Type:</strong> {{ $profile->program_type ?? 'N/A' }}</p>
-                            <p><strong>Session:</strong> {{ $profile->session->name ?? 'N/A' }}</p>
+                            <div class="col-md-6">
+                                <p><strong>Department:</strong> {{ $profile->department->name ?? 'N/A' }}</p>
+                                <p><strong>Level:</strong> {{ $profile->current_level ?? 'N/A' }}</p>
+                                <p><strong>Program Type:</strong> {{ $profile->program_type ?? 'N/A' }}</p>
+                                <p><strong>Session:</strong> {{ $profile->session->name ?? 'N/A' }}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            @endif
 
+            @if(auth()->user()->role == Utils::ROLE_ADMIN)
+                <div class="block block-rounded block-bordered">
+                    <div class="block-header">
+                        <h3 class="block-title text-uppercase">Personal Information</h3>
+                    </div>
+                    <div class="block-content">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>Staff ID:</strong> {{ $profile->staff_id ?? 'N/A' }}</p>
+                                <p><strong>Name:</strong> {{ auth()->user()->name }}</p>
+                                <p><strong>Email:</strong> {{ auth()->user()->email }}</p>
+                                <p><strong>Role:</strong> {{ ucfirst(auth()->user()->role) }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
+            @if(auth()->user()->role == Utils::ROLE_LECTURER)
+                <div class="block block-rounded block-bordered">
+                    <div class="block-header">
+                        <h3 class="block-title text-uppercase">Personal Information</h3>
+                    </div>
+                    <div class="block-content">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>Staff ID:</strong> {{ $profile->staff_id ?? 'N/A' }}</p>
+                                <p><strong>Name:</strong> {{ auth()->user()->name }}</p>
+                                <p><strong>Email:</strong> {{ auth()->user()->email }}</p>
+                                <p><strong>Role:</strong> {{ ucfirst(auth()->user()->role) }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="block block-rounded block-bordered">
+                    <div class="block-header">
+                        <h3 class="block-title text-uppercase">Academic Information</h3>
+                    </div>
+                    <div class="block-content">
+                        <div class="row">
+
+                            <div class="col-md-6">
+                                <p><strong>Department:</strong> {{ $profile->department->name ?? 'N/A' }}</p>
+                                <p><strong>Level:</strong> {{ $profile->level ?? 'N/A' }}</p>
+                                <p><strong>Program Type:</strong> {{ $profile->program_type ?? 'N/A' }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
         </div>
         <!-- END Page Content -->
     </main>

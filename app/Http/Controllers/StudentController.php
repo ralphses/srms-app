@@ -34,6 +34,7 @@ class StudentController extends Controller
             'program_type' => $request->input('program_type'),
             'school_session_id' => $request->input('school_session_id'),
             'search' => $request->input('search'),
+            'course' => $request->input('course'),
         ];
 
         // Common data
@@ -83,7 +84,7 @@ class StudentController extends Controller
             'school_session_id' => ['required', Rule::exists('school_sessions', 'id')],
             'name' => ['required'],
             'email' => ['required', 'email', Rule::unique('users', 'email')],
-            'current_level' => ['required', 'integer'],
+            'current_level' => [Rule::in(Utils::LEVELS)],
             'program_type' => ['required', Rule::in([Utils::PROGRAM_TYPE_DIPLOMA, Utils::PROGRAM_TYPE_DEGREE])],
         ]);
 
@@ -94,7 +95,7 @@ class StudentController extends Controller
             $studentUser = User::query()->create([
                 'name' => $validated['name'],
                 'email' => $validated['email'],
-                'password' => Hash::make($this->defaultPassword()),
+                'password' => Hash::make(Utils::defaultPassword()),
                 'role' => Utils::ROLE_STUDENT,
             ]);
 
@@ -143,24 +144,28 @@ class StudentController extends Controller
 
     private function applyStudentFilters(Builder $query, array $filters): Builder
     {
-        return $query->when(!empty($filters['department']), fn($q) => $q->where('department_id', $filters['department'])
-        )->when(!empty($filters['program_type']), fn($q) => $q->where('program_type', $filters['program_type'])
-        )->when(!empty($filters['school_session_id']), fn($q) => $q->where('school_session_id', $filters['school_session_id'])
-        )->when(!empty($filters['search']), function ($q) use ($filters) {
-            $search = '%' . $filters['search'] . '%';
-            $q->where(function ($q) use ($search) {
-                $q->whereHas('user', function ($sub) use ($search) {
-                    $sub->where('name', 'like', $search)
-                        ->orWhere('email', 'like', $search);
-                })->orWhere('matric_no', 'like', $search);
+        return $query
+            ->when(!empty($filters['department']), fn($q) => $q->where('department_id', $filters['department']))
+            ->when(!empty($filters['program_type']), fn($q) => $q->where('program_type', $filters['program_type']))
+            ->when(!empty($filters['school_session_id']), fn($q) => $q->where('school_session_id', $filters['school_session_id']))
+            ->when(!empty($filters['search']), function ($q) use ($filters) {
+                $search = '%' . $filters['search'] . '%';
+                $q->where(function ($q) use ($search) {
+                    $q->whereHas('user', function ($sub) use ($search) {
+                        $sub->where('name', 'like', $search)
+                            ->orWhere('email', 'like', $search);
+                    })->orWhere('matric_no', 'like', $search);
+                });
+            })
+            ->when(!empty($filters['course_id']), function ($q) use ($filters) {
+                $q->whereHas('courseRegistrations.courses', function ($sub) use ($filters) {
+                    $sub->where('id', $filters['course_id']);
+                });
             });
-        });
     }
 
-    private function defaultPassword()
-    {
-        return "123456";
-    }
+
+
 
     private function generateMatricNumber()
     {

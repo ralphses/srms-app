@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::create('school_sessions', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('current_semester');
+            $table->string('current_semester')->nullable();
             $table->date('first_semester_start_date');
             $table->date('second_semester_start_date');
             $table->timestamps();

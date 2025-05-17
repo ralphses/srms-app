@@ -1,8 +1,12 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CourseRegistrationController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\LecturerController;
+use App\Http\Controllers\SchoolSessionController;
 use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
 
@@ -51,10 +55,36 @@ Route::middleware('auth')->group(function () {
 
         // Admin student routes
         Route::prefix("students")->group( function () {
-
            Route::get('', [StudentController::class, 'index'])->name('students.index');
            Route::get('/register', [StudentController::class, 'create'])->name('students.create');
            Route::post('/register', [StudentController::class, 'store'])->name('students.store');
+        });
+
+        Route::prefix("departments")->group( function () {
+            Route::get('', [DepartmentController::class, 'index'])->name('departments.index');
+            Route::get('add', [DepartmentController::class, 'create'])->name('departments.create');
+            Route::post('add', [DepartmentController::class, 'store'])->name('departments.store');
+        });
+
+        Route::prefix("courses")->group(function () {
+            Route::get('', [CourseController::class, 'index'])->name('courses.index');
+            Route::get('add', [CourseController::class, 'create'])->name('courses.create');
+            Route::post('add', [CourseController::class, 'store'])->name('courses.store');
+        });
+
+        Route::prefix('lecturers')->group(function () {
+            Route::get('', [LecturerController::class, 'index'])->name('lecturers.index');
+            Route::get('add', [LecturerController::class, 'create'])->name('lecturers.create');
+            Route::post('add', [LecturerController::class, 'store'])->name('lecturers.store');
+            Route::post('{lecturer}/assign-course', [LecturerController::class, 'assignCourse'])->name('lecturers.course.assign.store');
+            Route::get('{lecturer}/courses', [LecturerController::class, 'viewCourses'])->name('lecturers.courses');
+            Route::get('{lecturer}/students', [LecturerController::class, 'viewStudents'])->name('lecturers.students');
+        });
+
+        Route::prefix('sessions')->group(function () {
+            Route::get('', [SchoolSessionController::class, 'index'])->name('sessions.index');
+            Route::get('create', [SchoolSessionController::class, 'create'])->name('sessions.create');
+            Route::post('create', [SchoolSessionController::class, 'store'])->name('sessions.store');
         });
     });
 });
