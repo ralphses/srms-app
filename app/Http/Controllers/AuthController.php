@@ -29,7 +29,8 @@ class AuthController extends Controller
             $request->session()->regenerate();
 
             if (Auth::user()->first_sign_in) {
-                return redirect()->route('password.update', ['role' => Auth::user()->role])->with('error', 'Please update your password');
+                return redirect()->route('password.update', ['role' => Auth::user()->role])
+                    ->with('error', 'Please update your password');
             }
 
             // Redirect based on role

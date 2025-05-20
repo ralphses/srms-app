@@ -9,10 +9,15 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
+
     public function up(): void
     {
-        Schema::create('student_result_inputs', function (Blueprint $table) {
+        Schema::create('semester_results', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('student_id')->constrained('students')->onDelete('cascade');
+            $table->foreignId('session_id')->constrained('school_sessions')->onDelete('cascade');
+            $table->string('semester');
+            $table->integer('level');
             $table->timestamps();
         });
     }
@@ -22,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('student_result_inputs');
+        Schema::dropIfExists('semester_results');
     }
 };

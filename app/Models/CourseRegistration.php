@@ -27,7 +27,8 @@ class CourseRegistration extends Model
         return $this->belongsTo(Student::class, 'student_id');
     }
 
-    public function schoolSession() {
+    public function schoolSession()
+    {
         return $this->belongsTo(SchoolSession::class, 'school_session_id');
     }
 }

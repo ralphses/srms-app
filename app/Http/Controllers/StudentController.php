@@ -107,7 +107,7 @@ class StudentController extends Controller
             Student::query()->create([
                 'user_id' => $studentUser->id,
                 'department_id' => $validated['department'],
-                'matric_no' => $this->generateMatricNumber(),
+                'matric_no' => self::generateMatricNumber(),
                 'current_level' => $validated['current_level'],
                 'next_level' => intval($validated['current_level']) + 1,
                 'program_type' => $validated['program_type'],
@@ -171,13 +171,10 @@ class StudentController extends Controller
 
 
 
-    private function generateMatricNumber()
+    public static function generateMatricNumber()
     {
-        $year = date('Y'); // Get the current year, e.g., 2025
-        $nextCount = Student::count() + 1;
-
-        // Total matric number must be 10 characters
-        // Year takes 4, nextCount takes variable length, rest filled with zeros
+        $year = date('Y');
+        $nextCount = Student::query()->count() + 1;
         $suffixLength = 10 - strlen($year);
         $matricSuffix = str_pad($nextCount, $suffixLength, '0', STR_PAD_LEFT);
 

@@ -37,7 +37,9 @@ class DashboardController extends Controller
                 return view('dashboard.lecturer.index', compact('semesters', 'courses', 'sessions'));
 
             case Utils::ROLE_STUDENT:
-                return view('dashboard.student.index', compact('semesters', 'sessions'));
+                $levels = Utils::LEVELS;
+                $sessions = $user->profile()->getSessions();
+                return view('dashboard.student.index', compact('semesters', 'sessions', 'levels'));
 
             default:
                 return redirect()->route('login');

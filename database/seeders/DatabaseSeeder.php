@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Http\Controllers\StudentController;
 use App\Models\AdminUser;
 use App\Models\Course;
 use App\Models\Department;
@@ -63,7 +64,7 @@ class DatabaseSeeder extends Seeder
         Student::create([
             'user_id' => $studentUser->id,
             'school_session_id' => $session->id,
-            'matric_no' => '303330033',
+            'matric_no' => StudentController::generateMatricNumber(),
             'current_level' => '100',
             'next_level' => '200',
             'program_type' => Utils::PROGRAM_TYPE_DEGREE,

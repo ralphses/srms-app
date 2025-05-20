@@ -18,6 +18,10 @@ class Utils
     const SEMESTER_SECOND = "second";
     const SEMESTER_THIRD = "third";
 
+    const SELECTION_FILTER_ALL = "all";
+    const SELECTION_FILTER_CURRENT = "current";
+    const SELECTION_FILTER_SELECTED = "selected";
+
     const SEMESTERS = [
         self::SEMESTER_FIRST => "First",
         self::SEMESTER_SECOND => "Second",

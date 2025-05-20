@@ -86,11 +86,15 @@ Route::middleware('auth')->group(function () {
             Route::get('', [SchoolSessionController::class, 'index'])->name('sessions.index');
             Route::get('create', [SchoolSessionController::class, 'create'])->name('sessions.create');
             Route::post('create', [SchoolSessionController::class, 'store'])->name('sessions.store');
+            Route::get('{sessionId}/update', [SchoolSessionController::class, 'show'])->name('sessions.show');
+            Route::post('{sessionId}/update', [SchoolSessionController::class, 'update'])->name('sessions.update');
         });
 
         Route::prefix("results")->group(function () {
             Route::get('', [StudentResultController::class, 'index'])->name('results.index');
-            Route::post('save', [StudentResultController::class, 'store'])->name('results.store');
+            Route::get('add', [StudentResultController::class, 'create'])->name('results.create');
+            Route::post('add', [StudentResultController::class, 'store'])->name('results.store');
+            Route::get('check', [StudentResultController::class, 'index'])->name('results.check');
         });
     });
 });

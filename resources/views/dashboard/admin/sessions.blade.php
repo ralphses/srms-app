@@ -59,6 +59,7 @@
                                 <th>First Semester Start</th>
                                 <th>Second Semester Start</th>
                                 <th>Current Semester</th>
+                                <th>Action</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -69,6 +70,10 @@
                                     <td>{{ Carbon::parse($session->first_semester_start_date)->format('M d, Y') }}</td>
                                     <td>{{ Carbon::parse($session->second_semester_start_date)->format('M d, Y') }}</td>
                                     <td>{{ ucfirst($session->current_semester) ?? 'N/A' }}</td>
+                                    <td><a href="{{ route('sessions.update', ['role' => auth()->user()->role, 'sessionId' => $session->id]) }}"
+                                           class="btn btn-primary btn-sm">
+                                            Update Session
+                                        </a></td>
                                 </tr>
                             @empty
                                 <tr>

@@ -32,8 +32,8 @@ class CourseRegistrationController extends Controller
         $profile = $user->profile(); // handles both student or lecturer via dynamic relation
 
         // Load course options
-        $availableCourses = Course::where([
-            'department'    => $profile->department,
+        $availableCourses = Course::query()->where([
+            'department_id'    => $profile->department_id,
             'level'         => $profile->next_level,
             'program_type'  => $profile->program_type,
         ])->get();

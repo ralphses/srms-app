@@ -35,4 +35,31 @@ class Student extends Model
     public function department() {
         return $this->belongsTo(Department::class, 'department_id');
     }
+
+    public function getSessions()
+    {
+        return SchoolSession::query()->whereIn('id', function ($query) {
+            $query->select('school_session_id')
+                ->from('course_registrations')
+                ->where('student_id', $this->id);
+        })->distinct()->get();
+    }
+
+    public function getCurrentSession()
+    {
+        return SchoolSession::query()->whereIn('id', function ($query) {
+            $query->select('school_session_id')
+                ->from('course_registrations')
+                ->where('student_id', $this->id);
+        })->latest()->first();
+    }
+
+    public function getCurrentSemester()
+    {
+        return SchoolSession::query()->whereIn('id', function ($query) {
+            $query->select('school_session_id')
+                ->from('course_registrations')
+                ->where('student_id', $this->id);
+        })->latest()->first()->currentSemester();
+    }
 }

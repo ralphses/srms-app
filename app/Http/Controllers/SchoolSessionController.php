@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\SchoolSession;
+use App\Utils\Utils;
+use Illuminate\Container\Attributes\Log;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class SchoolSessionController extends Controller
 {
@@ -50,6 +54,39 @@ class SchoolSessionController extends Controller
 
         return redirect()->route('sessions.index', ['role' => $request->user()->role])
             ->with('success', 'School session created successfully.');
+    }
+
+    public function show(Request $request)
+    {
+        try {
+            $sessionId = $request->sessionId;
+            $session = SchoolSession::findOrFail($sessionId);
+            return view('dashboard.admin.update-session', ['session' => $session]);
+        }catch (ModelNotFoundException $exception){
+            \Illuminate\Support\Facades\Log::error($exception->getMessage());
+            return back()->withErrors("School session not found");
+        }
+    }
+
+    public function update(Request $request)
+    {
+        $sessionId = $request->sessionId;
+
+        $validated = $request->validate([
+            'name' => ['required'],
+            'first_semester_start_date' => ['required', 'date'],
+            'second_semester_start_date' => ['required', 'date', 'after_or_equal:first_semester_start_date'],
+            'current_semester' => ['required', Rule::in(array_keys(Utils::SEMESTERS))],
+        ]);
+
+        try {
+            $session = SchoolSession::findOrFail($sessionId);
+            $session->update($validated);
+            return redirect()->route('sessions.index', ['role' => $request->user()->role]);
+        }catch (ModelNotFoundException $exception){
+            \Illuminate\Support\Facades\Log::error($exception->getMessage());
+            return back()->withErrors("School session not found");
+        }
     }
 
 }

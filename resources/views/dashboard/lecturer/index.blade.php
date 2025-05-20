@@ -113,8 +113,7 @@
     <!-- Record Result Modal -->
     <div class="modal fade" id="recordResultModal" tabindex="-1" aria-labelledby="recordResultModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-            <form action="{{ route('results.store', ['role' => auth()->user()->role]) }}" method="POST" class="modal-content">
-                @csrf
+            <form action="{{ route('results.create', ['role' => auth()->user()->role]) }}" method="GET" class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="recordResultModalLabel">Record Student Result</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
